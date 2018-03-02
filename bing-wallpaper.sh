@@ -114,9 +114,13 @@ for p in "${urls[@]}"; do
 done
 
 if [ $SET_WALLPAPER ]; then
+# Try new way that works with multiple monitors
+sqlite3 ~/Library/Application\ Support/Dock/desktoppicture.db "update data set value = '$PICTURE_DIR/$filename'";
+# Old way that doesn't require a dock restart
 /usr/bin/osascript<<END
 tell application "Finder"
 set desktop picture to POSIX file "$PICTURE_DIR/$filename"
 end tell
 END
+# At least on my system: 'defaults read com.apple.desktop' does not exist
 fi
